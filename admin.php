@@ -1,5 +1,10 @@
 <?php
+session_start();
 require 'config.php';
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header('Location: login.php');
+    exit;
+}
 
 // Handle document upload
 if (isset($_POST['upload']) && !empty($_FILES['document']['name'])) {
@@ -71,7 +76,10 @@ $events    = $pdo->query('SELECT * FROM events ORDER BY event_date ASC')->fetchA
 </head>
 <body>
     <h1>Administration</h1>
-    <p><a href="index.php">Back to main page</a></p>
+    <p>
+        <a href="index.php">Back to main page</a> |
+        <a href="logout.php">Logout</a>
+    </p>
 
     <section>
         <h2>Documents</h2>

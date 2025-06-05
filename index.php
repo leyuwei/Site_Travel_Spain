@@ -1,5 +1,10 @@
 <?php
+session_start();
 require 'config.php';
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header('Location: login.php');
+    exit;
+}
 //$documents
 $stmt = $pdo->query('SELECT * FROM documents ORDER BY uploaded_at DESC');
 $documents = $stmt->fetchAll();
@@ -25,7 +30,10 @@ $events = $stmt->fetchAll();
 </head>
 <body>
     <h1>Travel Information Portal</h1>
-    <p><a href="admin.php">Administration</a></p>
+    <p>
+        <a href="admin.php">Administration</a> |
+        <a href="logout.php">Logout</a>
+    </p>
 
     <section>
         <h2>Uploaded Documents</h2>

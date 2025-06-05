@@ -20,7 +20,8 @@ This is a simple LAMP-based website for storing and sharing travel information a
    ```bash
    chmod 777 uploads
    ```
-4. Access `index.php` to view the site and `admin.php` to manage content.
+4. Configure the shared login password in `config.php` (`$login_password`).
+5. Access `login.php` to sign in, then use `index.php` or `admin.php`.
 
 ## Security Note
-This example omits authentication and advanced security for brevity. In production you should secure the administration interface and sanitize inputs further.
+The example includes a very basic password-based login system intended for demonstration. For real deployments, implement proper user management and stronger security measures.

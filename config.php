@@ -5,6 +5,9 @@ $db   = 'travel_db';
 $user = 'travel_user';
 $pass = 'travel_pass';
 $charset = 'utf8mb4';
+
+// Simple shared password for login
+$login_password = 'XXXXXX';
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
