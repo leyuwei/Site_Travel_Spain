@@ -61,69 +61,91 @@ $events    = $pdo->query('SELECT * FROM events ORDER BY event_date ASC')->fetchA
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin - Travel Information Portal</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        section { margin-bottom: 40px; }
-        h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 5px; }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Administration</h1>
-    <p><a href="index.php">Back to main page</a> | <a href='logout.php'>Logout</a></p>
-<section>
-        <h2>Documents</h2>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="document" required>
-            <button type="submit" name="upload">Upload</button>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Travel Portal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container py-4">
+    <h1 class="mb-4">Administration</h1>
+<section class="mb-4">
+        <h2 class="h4 border-bottom pb-2">Documents</h2>
+        <form method="post" enctype="multipart/form-data" class="mb-3">
+            <div class="input-group">
+                <input type="file" class="form-control" name="document" required>
+                <button type="submit" class="btn btn-primary" name="upload">Upload</button>
+            </div>
         </form>
-        <ul>
+        <ul class="list-group">
             <?php foreach ($documents as $doc): ?>
-                <li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a href="<?php echo htmlspecialchars($doc['filepath']); ?>"><?php echo htmlspecialchars($doc['filename']); ?></a>
-                    <a href="?delete_doc=<?php echo $doc['id']; ?>" onclick="return confirm('Delete this document?');">Delete</a>
+                    <a href="?delete_doc=<?php echo $doc['id']; ?>" class="text-danger" onclick="return confirm('Delete this document?');">Delete</a>
                 </li>
             <?php endforeach; ?>
         </ul>
     </section>
 
-    <section>
-        <h2>Travel Plans / Itinerary</h2>
-        <form method="post">
-            <textarea name="plan_content" rows="4" cols="50" required></textarea><br>
-            <button type="submit" name="add_plan">Add Plan</button>
+    <section class="mb-4">
+        <h2 class="h4 border-bottom pb-2">Travel Plans / Itinerary</h2>
+        <form method="post" class="mb-3">
+            <div class="mb-2">
+                <textarea name="plan_content" class="form-control" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" name="add_plan">Add Plan</button>
         </form>
-        <ul>
+        <ul class="list-group">
             <?php foreach ($plans as $plan): ?>
-                <li>
-                    <?php echo nl2br(htmlspecialchars($plan['content'])); ?>
-                    <a href="?delete_plan=<?php echo $plan['id']; ?>" onclick="return confirm('Delete this plan?');">Delete</a>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <span><?php echo nl2br(htmlspecialchars($plan['content'])); ?></span>
+                    <a href="?delete_plan=<?php echo $plan['id']; ?>" class="text-danger ms-3" onclick="return confirm('Delete this plan?');">Delete</a>
                 </li>
             <?php endforeach; ?>
         </ul>
     </section>
 
-    <section>
-        <h2>Upcoming Events</h2>
-        <form method="post">
-            Title: <input type="text" name="title" required><br>
-            Date: <input type="date" name="event_date" required><br>
-            Description:<br>
-            <textarea name="description" rows="4" cols="50"></textarea><br>
-            <button type="submit" name="add_event">Add Event</button>
+    <section class="mb-4">
+        <h2 class="h4 border-bottom pb-2">Upcoming Events</h2>
+        <form method="post" class="mb-3">
+            <div class="mb-2">
+                <input type="text" class="form-control" name="title" placeholder="Title" required>
+            </div>
+            <div class="mb-2">
+                <input type="date" class="form-control" name="event_date" required>
+            </div>
+            <div class="mb-2">
+                <textarea name="description" class="form-control" rows="4" placeholder="Description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" name="add_event">Add Event</button>
         </form>
-        <ul>
+        <ul class="list-group">
             <?php foreach ($events as $event): ?>
-                <li>
-                    <strong><?php echo htmlspecialchars($event['title']); ?></strong>
-                    (<?php echo htmlspecialchars($event['event_date']); ?>)
-                    <a href="?delete_event=<?php echo $event['id']; ?>" onclick="return confirm('Delete this event?');">Delete</a><br>
-                    <?php echo nl2br(htmlspecialchars($event['description'])); ?>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong><?php echo htmlspecialchars($event['title']); ?></strong>
+                        (<?php echo htmlspecialchars($event['event_date']); ?>)<br>
+                        <?php echo nl2br(htmlspecialchars($event['description'])); ?>
+                    </div>
+                    <a href="?delete_event=<?php echo $event['id']; ?>" class="text-danger ms-3" onclick="return confirm('Delete this event?');">Delete</a>
                 </li>
             <?php endforeach; ?>
         </ul>
     </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
