@@ -1,5 +1,6 @@
 <?php
 require 'config.php';
+require "auth.php";
 //$documents
 $stmt = $pdo->query('SELECT * FROM documents ORDER BY uploaded_at DESC');
 $documents = $stmt->fetchAll();
@@ -25,7 +26,7 @@ $events = $stmt->fetchAll();
 </head>
 <body>
     <h1>Travel Information Portal</h1>
-    <p><a href="admin.php">Administration</a></p>
+    <p><a href="admin.php">Administration</a> | <a href="logout.php">Logout</a></p>
 
     <section>
         <h2>Uploaded Documents</h2>

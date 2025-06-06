@@ -1,6 +1,8 @@
 <?php
 // Database connection settings
 $host = 'localhost';
+// Password required to access the site
+$site_password = 'changeme';
 $db   = 'travel_db';
 $user = 'travel_user';
 $pass = 'travel_pass';
