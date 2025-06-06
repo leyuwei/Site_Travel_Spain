@@ -2,13 +2,13 @@
 require 'config.php';
 require "auth.php";
 //$documents
-$stmt = $pdo->query('SELECT * FROM documents ORDER BY uploaded_at DESC');
+$stmt = $pdo->query('SELECT * FROM documents ORDER BY position ASC, uploaded_at DESC');
 $documents = $stmt->fetchAll();
 
-$stmt = $pdo->query('SELECT * FROM travel_plans ORDER BY created_at DESC');
+$stmt = $pdo->query('SELECT * FROM travel_plans ORDER BY position ASC, created_at DESC');
 $plans = $stmt->fetchAll();
 
-$stmt = $pdo->query('SELECT * FROM events ORDER BY event_date ASC');
+$stmt = $pdo->query('SELECT * FROM events ORDER BY position ASC, event_date ASC');
 $events = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
