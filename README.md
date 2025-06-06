@@ -20,7 +20,11 @@ This is a simple LAMP-based website for storing and sharing travel information a
    ```bash
    chmod 777 uploads
    ```
-4. Access `index.php` to view the site and `admin.php` to manage content.
+4. Edit `config.php` and set the `$site_password` variable to the password you
+   want to use for accessing the site.
+5. Open `login.php` in your browser and enter the password. A cookie will be
+   stored so you do not need to log in on every visit.
+6. Once logged in you can access `index.php` and `admin.php` normally.
 
 ## Security Note
-This example omits authentication and advanced security for brevity. In production you should secure the administration interface and sanitize inputs further.
+This project now includes a very basic password protection mechanism. All pages require the password specified in `config.php` and set a cookie once authenticated. For production use you should implement a more robust authentication system and sanitize inputs further.
