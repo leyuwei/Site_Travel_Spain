@@ -18,6 +18,9 @@ $events = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Travel Information Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .past-item { color: #6c757d; }
+    </style>
 </head>
 <body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -36,6 +39,10 @@ $events = $stmt->fetchAll();
 </nav>
 <div class="container py-4">
     <h1 class="mb-4">Travel Information Portal</h1>
+    <div id="international-clock" class="mb-4">
+        <strong>Beijing:</strong> <span id="time-beijing"></span>
+        <strong class="ms-3">Spain:</strong> <span id="time-spain"></span>
+    </div>
 
     <section class="mb-4">
         <h2 class="h4 border-bottom pb-2">Uploaded Documents</h2>
@@ -50,7 +57,7 @@ $events = $stmt->fetchAll();
         <h2 class="h4 border-bottom pb-2">Travel Plans / Itinerary</h2>
         <ul class="list-group">
             <?php foreach ($plans as $plan): ?>
-                <li class="list-group-item"><?php echo nl2br(htmlspecialchars($plan['content'])); ?></li>
+                <li class="list-group-item travel-plan-item"><?php echo nl2br(htmlspecialchars($plan['content'])); ?></li>
             <?php endforeach; ?>
         </ul>
     </section>
@@ -59,7 +66,7 @@ $events = $stmt->fetchAll();
         <h2 class="h4 border-bottom pb-2">Upcoming Events</h2>
         <ul class="list-group">
             <?php foreach ($events as $event): ?>
-                <li class="list-group-item">
+                <li class="list-group-item event-item" data-date="<?php echo htmlspecialchars($event['event_date']); ?>">
                     <strong><?php echo htmlspecialchars($event['title']); ?></strong>
                     (<?php echo htmlspecialchars($event['event_date']); ?>)<br>
                     <?php echo nl2br(htmlspecialchars($event['description'])); ?>
@@ -69,5 +76,49 @@ $events = $stmt->fetchAll();
     </section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function updateClocks() {
+    const now = new Date();
+    document.getElementById('time-beijing').textContent = now.toLocaleTimeString('en-GB', {timeZone: 'Asia/Shanghai'});
+    document.getElementById('time-spain').textContent = now.toLocaleTimeString('en-GB', {timeZone: 'Europe/Madrid'});
+}
+
+function greyOutPastItems() {
+    const now = new Date();
+    document.querySelectorAll('.event-item').forEach(li => {
+        const dateStr = li.dataset.date;
+        if (dateStr) {
+            const dt = new Date(dateStr + 'T23:59:59');
+            if (dt < now) {
+                li.classList.add('past-item');
+            }
+        }
+    });
+    document.querySelectorAll('.travel-plan-item').forEach(li => {
+        const text = li.textContent;
+        const m = text.match(/(\d{4}-\d{2}-\d{2})(?:\s+(\d{2}:\d{2}))/);
+        if (m) {
+            let dtStr = m[1];
+            if (m[2]) dtStr += 'T' + m[2];
+            const dt = new Date(dtStr);
+            if (!isNaN(dt) && dt < now) {
+                li.classList.add('past-item');
+            }
+        } else {
+            const dateOnly = text.match(/\d{4}-\d{2}-\d{2}/);
+            if (dateOnly) {
+                const dt = new Date(dateOnly[0]);
+                if (dt < now) li.classList.add('past-item');
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateClocks();
+    greyOutPastItems();
+    setInterval(updateClocks, 1000);
+});
+</script>
 </body>
 </html>
